@@ -1,5 +1,6 @@
 # Global voice commands
 
+# numbers
 <n> := 0..100;
 bay <n> = $1;
 
@@ -63,7 +64,7 @@ tarzy = If(TimeContext.Restart("select"), {ctrl+shift+right}, {ctrl+right});
 wicksy = If(TimeContext.Restart("select"), {shift+up_5}, {up_5});
 bearsy = If(TimeContext.Restart("select"), {shift+down_5}, {down_5});
 
-# repeat arrows
+# repeat batch arrows
 lapsy <n> = If(TimeContext.Restart("select"), {ctrl+shift+left_$1}, {ctrl+left_$1});
 tarzy <n> = If(TimeContext.Restart("select"), {ctrl+shift+right_$1}, {ctrl+right_$1});
 wicksy <n> = If(TimeContext.Restart("select"), {shift+up_ Eval("$1 * 5")}, {up_ Eval("$1 * 5")});
