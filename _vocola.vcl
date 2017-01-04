@@ -102,6 +102,11 @@ curly = "{}"{left};
 stringy = '""'{left};
 singly = "''"{left};
 
+# multiline wrappers
+bay inset = "()"{left}{enter}{up}{end};
+bay bracken = "[]"{left}{enter}{up}{end};
+bay curly = "{}"{left}{enter}{up}{end};
+
 # punctuation
 adjourn = ";";
 thunder = "_";
