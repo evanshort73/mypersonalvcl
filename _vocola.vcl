@@ -83,8 +83,8 @@ berry = If(TimeContext.Restart("select"), {shift+pgdn}, {pgdn});
 	| lever = shift+tab
 	| burn = del
 	| burnsy = ctrl+del
-	| wipe = backspace
-	| wipesy = ctrl+backspace
+	| swipe = backspace
+	| swipesy = ctrl+backspace
 	| nudge = space
   );
 <repeatable> = {$1} If(TimeContext.Restart("select", 0), "", "");
@@ -97,8 +97,8 @@ choppy = {end}{enter};
 choppy <n> = {end}{enter_$1};
 Bernie = {shift+end}{del};
 Bernie <n> = {shift+down_$1}{shift+end}{del};
-wipey = {shift+home}{backspace};
-wipey <n> = {shift+up_$1}{shift+home}{backspace};
+swipey = {shift+home}{backspace};
+swipey <n> = {shift+up_$1}{shift+home}{backspace};
 
 dodge = {esc} If(TimeContext.Restart("select", 0), "", "");
 grab line = {home}{shift+end} TimeContext.Start("select", 40, "noop()");
