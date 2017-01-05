@@ -32,8 +32,10 @@ bay <n> = $1;
 	| yak = y
 	| zebra = z
 	);
-<a> = $1;
+<a> = If(TimeContext.Restart("capslock"), {shift+$1}, $1);
 bay <a> = {shift+$1};
+bay lock = TimeContext.Start("capslock", 40, "noop()");
+bay unlock = If(TimeContext.Restart("capslock", 0), "", "");
 
 grab = TimeContext.Start("select", 40, "noop()");
 jettison = If(TimeContext.Restart("select", 0), "", "");
@@ -79,8 +81,10 @@ berry = If(TimeContext.Restart("select"), {shift+pgdn}, {pgdn});
 # repeatable keys
 <repeatable> := ( levy = tab
 	| lever = shift+tab
-	| wipe = del
-	| verse = backspace
+	| burn = del
+	| burnsy = ctrl+del
+	| wipe = backspace
+	| wipesy = ctrl+backspace
 	| nudge = space
   );
 <repeatable> = {$1} If(TimeContext.Restart("select", 0), "", "");
@@ -91,6 +95,10 @@ chop <n> = {enter_$1}
 	If(TimeContext.Restart("select", 0), "", "");
 choppy = {end}{enter};
 choppy <n> = {end}{enter_$1};
+Bernie = {shift+end}{del};
+Bernie <n> = {shift+down_$1}{shift+end}{del};
+wipey = {shift+home}{backspace};
+wipey <n> = {shift+up_$1}{shift+home}{backspace};
 
 dodge = {esc} If(TimeContext.Restart("select", 0), "", "");
 grab line = {home}{shift+end} TimeContext.Start("select", 40, "noop()");
@@ -163,6 +171,7 @@ bottle = {ctrl+c} If(TimeContext.Restart("select", 0), "", "");
 snag = {ctrl+x} If(TimeContext.Restart("select", 0), "", "");
 pour = {ctrl+v} If(TimeContext.Restart("select", 0), "", "");
 stow = {ctrl+s};
+forage = {ctrl+f};
 
 flip = SendSystemKeys({ctrl+alt+tab}) TimeContext.Start("system", 1, "noop()");
 window left = SendSystemKeys({win+left});
@@ -172,7 +181,8 @@ volley = Keys.SendInput({VolumeUp}{VolumeDown}) TimeContext.Start("volume", 3, "
 mute = Keys.SendInput({VolumeMute});
 
 time context ping = TimeContext.Ping();
-Mindy <_anything> = MenuPick($1);
+tug <_anything> = MenuPick($1);
+tug it = Keys.SendInput({Apps});
 
 # variables
 camel <_anything> = EvalTemplate("%s[0].lower() + ''.join(%s.title().split())[1:]", $1, $1);
