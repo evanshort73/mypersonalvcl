@@ -94,8 +94,8 @@ chop = If(TimeContext.Restart("system", 0), SendSystemKeys({enter}), {enter})
 	If(TimeContext.Restart("select", 0), "", "");
 chop <n> = {enter_$1}
 	If(TimeContext.Restart("select", 0), "", "");
-choppy = {end}{enter};
-choppy <n> = {end}{enter_$1};
+choppy = {end}{enter} If(TimeContext.Restart("select", 0), "", "");
+choppy <n> = {end}{enter_$1} If(TimeContext.Restart("select", 0), "", "");
 
 dodge = {esc} If(TimeContext.Restart("select", 0), "", "");
 
@@ -160,15 +160,15 @@ ripple = Keys.SendInput({wheelup_1});
 ripple <n> = Keys.SendInput({wheelup_$1});
 
 # common shortcuts
-revoke = {ctrl+z};
-grab all = {ctrl+a};
+revoke = {ctrl+z} If(TimeContext.Restart("select", 0), "", "");
+grab all = {ctrl+a} If(TimeContext.Restart("select", 0), "", "");
 banish = {ctrl+w};
 bottle = {ctrl+c} If(TimeContext.Restart("select", 0), "", "");
 bottle <n> = {ctrl+left_$1}{shift+ctrl+right_$1} {ctrl+c} If(TimeContext.Restart("select", 0), "", "");
 snag = {ctrl+x} If(TimeContext.Restart("select", 0), "", "");
 pour = {ctrl+v} If(TimeContext.Restart("select", 0), "", "");
 stow = {ctrl+s};
-forage = {ctrl+f};
+forage = {ctrl+f} If(TimeContext.Restart("select", 0), "", "");
 
 flip = SendSystemKeys({ctrl+alt+tab}) TimeContext.Start("system", 1, "noop()");
 window left = SendSystemKeys({win+left});
@@ -178,8 +178,8 @@ volley = Keys.SendInput({VolumeUp}{VolumeDown}) TimeContext.Start("volume", 3, "
 mute = Keys.SendInput({VolumeMute});
 
 time context ping = TimeContext.Ping();
-tug <_anything> = MenuPick($1);
-tug it = Keys.SendInput({Apps});
+tug <_anything> = MenuPick($1) If(TimeContext.Restart("select", 0), "", "");
+tug it = Keys.SendInput({Apps}) If(TimeContext.Restart("select", 0), "", "");
 
 # variables
 camel <_anything> = EvalTemplate("%s[0].lower() + ''.join(%s.title().split())[1:]", $1, $1);
