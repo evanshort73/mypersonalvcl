@@ -38,9 +38,8 @@ bay lock = TimeContext.Start("capslock", 40, "noop()");
 bay unlock = If(TimeContext.Restart("capslock", 0), "", "");
 
 grab = TimeContext.Start("select", 40, "noop()");
-grabsy = {ctrl+left}{shift+ctrl+right} If(TimeContext.Restart("select", 0), "", "");
 grabby = {home}{shift+end} If(TimeContext.Restart("select", 0), "", "");
-jettison = If(TimeContext.Restart("select", 0), "", "");
+jetsam = If(TimeContext.Restart("select", 0), "", "");
 
 # arrows
 lap = If(TimeContext.Restart("select"), {shift+left}, {left});
@@ -63,30 +62,30 @@ bear <n> =	If(TimeContext.Restart("volume"), Keys.SendInput({VolumeDown_ Eval("$
 	{down_$1}));
 
 # batch arrows
-lapsy = If(TimeContext.Restart("select"), {ctrl+shift+left}, {ctrl+left});
-tarzy = If(TimeContext.Restart("select"), {ctrl+shift+right}, {ctrl+right});
+lapsy = If(TimeContext.Restart("select"), {ctrl+shift+left}, {ctrl+left}{shift+ctrl+right});
+tarzy = If(TimeContext.Restart("select"), {ctrl+shift+right}, {ctrl+right}{shift+ctrl+left});
 wicksy = If(TimeContext.Restart("select"), {shift+up_5}, {up_5});
 bearsy = If(TimeContext.Restart("select"), {shift+down_5}, {down_5});
 
 # repeat batch arrows
-lapsy <n> = If(TimeContext.Restart("select"), {ctrl+shift+left_$1}, {ctrl+left_$1});
-tarzy <n> = If(TimeContext.Restart("select"), {ctrl+shift+right_$1}, {ctrl+right_$1});
+lapsy <n> = If(TimeContext.Restart("select"), {ctrl+shift+left_$1}, {ctrl+left_$1}{shift+ctrl+right_$1});
+tarzy <n> = If(TimeContext.Restart("select"), {ctrl+shift+right_$1}, {ctrl+right_$1}{shift+ctrl+left_$1});
 wicksy <n> = If(TimeContext.Restart("select"), {shift+up_ Eval("$1 * 5")}, {up_ Eval("$1 * 5")});
 bearsy <n> = If(TimeContext.Restart("select"), {shift+down_ Eval("$1 * 5")}, {down_ Eval("$1 * 5")});
 
 # long-range arrows
-lappy = If(TimeContext.Restart("select"), {shift+home}, {home});
-taree = If(TimeContext.Restart("select"), {shift+end}, {end});
+lappy = {shift+home} If(TimeContext.Restart("select"), "", "");
+taree = {shift+end} If(TimeContext.Restart("select"), "", "");
 wiki = If(TimeContext.Restart("select"), {shift+pgup}, {pgup});
 berry = If(TimeContext.Restart("select"), {shift+pgdn}, {pgdn});
+wiki <n> = If(TimeContext.Restart("select"), {shift+pgup_$1}, {pgup_$1});
+berry <n> = If(TimeContext.Restart("select"), {shift+pgdn_$1}, {pgdn_$1});
 
 # repeatable keys
 <repeatable> := ( levy = tab
 	| lever = shift+tab
 	| burn = del
-	| burnsy = ctrl+del
 	| swipe = backspace
-	| swipesy = ctrl+backspace
 	| nudge = space
   );
 <repeatable> = {$1} If(TimeContext.Restart("select", 0), "", "");
@@ -97,10 +96,6 @@ chop <n> = {enter_$1}
 	If(TimeContext.Restart("select", 0), "", "");
 choppy = {end}{enter};
 choppy <n> = {end}{enter_$1};
-Bernie = {shift+end}{del};
-Bernie <n> = {shift+down_$1}{shift+end}{del};
-swipey = {shift+home}{backspace};
-swipey <n> = {shift+up_$1}{shift+home}{backspace};
 
 dodge = {esc} If(TimeContext.Restart("select", 0), "", "");
 
@@ -169,6 +164,7 @@ revoke = {ctrl+z};
 grab all = {ctrl+a};
 banish = {ctrl+w};
 bottle = {ctrl+c} If(TimeContext.Restart("select", 0), "", "");
+bottle <n> = {ctrl+left_$1}{shift+ctrl+right_$1} {ctrl+c} If(TimeContext.Restart("select", 0), "", "");
 snag = {ctrl+x} If(TimeContext.Restart("select", 0), "", "");
 pour = {ctrl+v} If(TimeContext.Restart("select", 0), "", "");
 stow = {ctrl+s};
