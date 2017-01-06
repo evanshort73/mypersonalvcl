@@ -102,32 +102,56 @@ bear <n> =
            {ctrl+down_$1},
            {down_$1})));
 
-# batch arrows
-lapsy = If(TimeContext.Restart("select"), {ctrl+shift+left}, {ctrl+left}{shift+ctrl+right});
-tarzy = If(TimeContext.Restart("select"), {ctrl+shift+right}, {ctrl+right}{shift+ctrl+left});
-wicksy = {end}{up}{end}{shift+down}{shift+end} If(TimeContext.Restart("select", 0), "", "");
-bearsy = {end}{shift+home} If(TimeContext.Restart("select", 0), "", "");
+# selecting arrows
+lappy =
+  If(TimeContext.Restart("select"),
+     ctrl+shift+left},
+     {ctrl+left}{shift+ctrl+right});
+taree =
+  If(TimeContext.Restart("select"),
+     {ctrl+shift+right},
+     {ctrl+right}{shift+ctrl+left});
+wiki =
+  If(TimeContext.Restart("select"),
+     {shift+up}{shift+end},
+     {end}{up}{end}{shift+down}{shift+end});
+berry =
+  If(TimeContext.Restart("select"),
+     {shift+right}{shift+end},
+     {end}{shift+home});
 
-# repeat batch arrows
-lapsy <n> = If(TimeContext.Restart("select"), {ctrl+shift+left_$1}, {ctrl+left_$1}{shift+ctrl+right_$1});
-tarzy <n> = If(TimeContext.Restart("select"), {ctrl+shift+right_$1}, {ctrl+right_$1}{shift+ctrl+left_$1});
-wicksy <n> = {end}{up_$1}{end}{shift+down_$1}{shift+end} If(TimeContext.Restart("select", 0), "", "");
-bearsy <n> = {end}{down_ Eval("$1 - 1")}{end}{shift+up_ Eval("$1 - 1")}{shift+end}{shift+home} If(TimeContext.Restart("select", 0), "", "");
+# repeat selecting arrows
+lappy <n> =
+  If(TimeContext.Restart("select"),
+     {ctrl+shift+left_$1},
+     {ctrl+left_$1}{shift+ctrl+right_$1});
+taree <n> =
+  If(TimeContext.Restart("select"),
+     {ctrl+shift+right_$1},
+     {ctrl+right_$1}{shift+ctrl+left_$1});
+wiki <n> =
+  If(TimeContext.Restart("select"),
+     {shift+up_$1}{shift+end},
+     {end}{up_$1}{end}{shift+down_$1}{shift+end});
+berry <n> =
+  If(TimeContext.Restart("select"),
+     {shift+right}{shift+down_ Eval("$1 - 1")}{shift+end},
+     {end}{down_ Eval("$1 - 1")}{end}{shift+up_ Eval("$1 - 1")}{shift+end}{shift+home});
 
 # long-range arrows
-lappy = If(TimeContext.Restart("select"), {shift+home}, {home});
-taree = If(TimeContext.Restart("select"), {shift+end}, {end});
-wiki = If(TimeContext.Restart("select"), {shift+pgup}, {pgup});
-berry = If(TimeContext.Restart("select"), {shift+pgdn}, {pgdn});
-wiki <n> = If(TimeContext.Restart("select"), {shift+pgup_$1}, {pgup_$1});
-berry <n> = If(TimeContext.Restart("select"), {shift+pgdn_$1}, {pgdn_$1});
+lapsy = If(TimeContext.Restart("select"), {shift+home}, {home});
+tarzy = If(TimeContext.Restart("select"), {shift+end}, {end});
+wicksy = If(TimeContext.Restart("select"), {shift+pgup}, {pgup});
+bearsy = If(TimeContext.Restart("select"), {shift+pgdn}, {pgdn});
+wicksy <n> = If(TimeContext.Restart("select"), {shift+pgup_$1}, {pgup_$1});
+bearsy <n> = If(TimeContext.Restart("select"), {shift+pgdn_$1}, {pgdn_$1});
 
 # repeatable keys
 <repeatable> :=
   ( levy = tab
   | lever = shift+tab
   | burn = del
-  | swipe = backspace
+  | wipe = backspace
   | nudge = space
   );
 <repeatable> = {$1} If(TimeContext.Restart("select", 0), "", "");
@@ -226,12 +250,16 @@ bottle =
 bottle <n> =
   {ctrl+left_$1}{shift+ctrl+right_$1}{ctrl+c}
   If(TimeContext.Restart("select", 0), "", "");
-snag =
-  {ctrl+x}
-  If(TimeContext.Restart("select", 0), "", "")
-  If(TimeContext.Restart("controlselect", 0), "", "");
-pour = {ctrl+v} If(TimeContext.Restart("select", 0), "", "");
-xerox = {up}{end}{shift+down}{shift+end}{ctrl+c}{right}{ctrl+v};
+tank =
+  {end}{up}{end}{shift+down}{shift+end}{ctrl+c}
+  If(TimeContext.Restart("select", 0), "", "");
+tank <n> =
+  {end}{up_$1}{end}{shift+down_$1}{shift+end}{ctrl+c}
+  If(TimeContext.Restart("select", 0), "", "");
+spill = {ctrl+v} If(TimeContext.Restart("select", 0), "", "");
+spill <n> = {ctrl+v_$1} If(TimeContext.Restart("select", 0), "", "");
+spilly = {end}{ctrl+v} If(TimeContext.Restart("select", 0), "", "");
+spilly <n> = {end}{ctrl+v_$1} If(TimeContext.Restart("select", 0), "", "");
 stow = {ctrl+s};
 forage = {ctrl+f} If(TimeContext.Restart("select", 0), "", "");
 
@@ -261,3 +289,6 @@ fuse <_anything> = EvalTemplate("''.join(%s.lower().split())", $1);
 snake <_anything> = EvalTemplate("'_'.join(%s.lower().split())", $1);
 scream <_anything> = EvalTemplate("'_'.join(%s.upper().split())", $1);
 kebab <_anything> = EvalTemplate("'-'.join(%s.lower().split())", $1);
+
+fuse it = {ctrl+left}{backspace}{ctrl+right};
+snake it = {ctrl+left}{shift+left} "_" {ctrl+right};
