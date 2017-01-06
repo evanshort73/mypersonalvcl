@@ -39,7 +39,7 @@ bay unlock = If(TimeContext.Restart("capslock", 0), "", "");
 
 grab = TimeContext.Start("select", 40, "noop()");
 grabby = {home}{shift+end} If(TimeContext.Restart("select", 0), "", "");
-jetsam = If(TimeContext.Restart("select", 0), "", "");
+jetsam = {right} If(TimeContext.Restart("select", 0), "", "");
 
 # arrows
 lap = If(TimeContext.Restart("select"), {shift+left}, {left});
