@@ -40,7 +40,6 @@ bay unlock = If(TimeContext.Restart("capslock", 0), "", "");
 
 grab = TimeContext.Start("select", 40, "noop()");
 control grab = TimeContext.Start("controlselect", 40, "noop()");
-grabby = {home}{shift+end} If(TimeContext.Restart("select", 0), "", "");
 jetsam = If(TimeContext.Restart("select", 0), "", "") If(TimeContext.Restart("controlselect", 0), "", "");
 
 # arrows
@@ -106,38 +105,18 @@ bear <n> =
 # batch arrows
 lapsy = If(TimeContext.Restart("select"), {ctrl+shift+left}, {ctrl+left}{shift+ctrl+right});
 tarzy = If(TimeContext.Restart("select"), {ctrl+shift+right}, {ctrl+right}{shift+ctrl+left});
-wicksy =
-  If(TimeContext.Restart("select"),
-     {shift+up_5},
-     If(TimeContext.Restart("controlselect"),
-        {ctrl+up_5},
-        {up_5}));
-bearsy =
-  If(TimeContext.Restart("select"),
-     {shift+down_5},
-     If(TimeContext.Restart("controlselect"),
-        {ctrl+down_5},
-        {down_5}));
+wicksy = {end}{up}{end}{shift+down}{shift+end} If(TimeContext.Restart("select", 0), "", "");
+bearsy = {end}{shift+home} If(TimeContext.Restart("select", 0), "", "");
 
 # repeat batch arrows
 lapsy <n> = If(TimeContext.Restart("select"), {ctrl+shift+left_$1}, {ctrl+left_$1}{shift+ctrl+right_$1});
 tarzy <n> = If(TimeContext.Restart("select"), {ctrl+shift+right_$1}, {ctrl+right_$1}{shift+ctrl+left_$1});
-wicksy <n> =
-  If(TimeContext.Restart("select"),
-     {shift+up_ Eval("$1 * 5")},
-     If(TimeContext.Restart("controlselect"),
-        {ctrl+up_ Eval("$1 * 5")},
-        {up_ Eval("$1 * 5")}));
-bearsy <n> =
-  If(TimeContext.Restart("select"),
-     {shift+down_ Eval("$1 * 5")},
-     If(TimeContext.Restart("controlselect"),
-        {ctrl+down_ Eval("$1 * 5")},
-        {down_ Eval("$1 * 5")}));
+wicksy <n> = {end}{up_$1}{end}{shift+down_$1}{shift+end} If(TimeContext.Restart("select", 0), "", "");
+bearsy <n> = {end}{down_ Eval("$1 - 1")}{end}{shift+up_ Eval("$1 - 1")}{shift+end}{shift+home} If(TimeContext.Restart("select", 0), "", "");
 
 # long-range arrows
-lappy = {shift+home} If(TimeContext.Restart("select"), "", "");
-taree = {shift+end} If(TimeContext.Restart("select"), "", "");
+lappy = If(TimeContext.Restart("select"), {shift+home}, {home});
+taree = If(TimeContext.Restart("select"), {shift+end}, {end});
 wiki = If(TimeContext.Restart("select"), {shift+pgup}, {pgup});
 berry = If(TimeContext.Restart("select"), {shift+pgdn}, {pgdn});
 wiki <n> = If(TimeContext.Restart("select"), {shift+pgup_$1}, {pgup_$1});
@@ -190,14 +169,16 @@ thunder = "_";
 bang = "!";
 pipe = "|";
 dot = ".";
+backslash = "\";
+slash = "/";
 # spaced punctuation
 <spaced> :=
   ( dash = "-"
   | dasher = "-="
   | plus = "+"
   | plusser = "+="
-  | slash = "/"
-  | slasher = "/="
+  | divide = "/"
+  | divider = "/="
   | star = "*"
   | starker = "*="
   | modulus = "%"
@@ -250,10 +231,12 @@ snag =
   If(TimeContext.Restart("select", 0), "", "")
   If(TimeContext.Restart("controlselect", 0), "", "");
 pour = {ctrl+v} If(TimeContext.Restart("select", 0), "", "");
+xerox = {up}{end}{shift+down}{shift+end}{ctrl+c}{right}{ctrl+v};
 stow = {ctrl+s};
 forage = {ctrl+f} If(TimeContext.Restart("select", 0), "", "");
 
 flip = SendSystemKeys({ctrl+alt+tab}) TimeContext.Start("system", 1, "noop()");
+flip <n> = SendSystemKeys({ctrl+alt+tab_$1}) TimeContext.Start("system", 1, "noop()");
 window left = SendSystemKeys({win+left});
 window right = SendSystemKeys({win+right});
 
