@@ -38,6 +38,8 @@ bay lock = TimeContext.Start("capslock", 40, "noop()");
 bay unlock = If(TimeContext.Restart("capslock", 0), "", "");
 
 grab = TimeContext.Start("select", 40, "noop()");
+grabsy = {ctrl+left}{shift+ctrl+right} If(TimeContext.Restart("select", 0), "", "");
+grabby = {home}{shift+end} If(TimeContext.Restart("select", 0), "", "");
 jettison = If(TimeContext.Restart("select", 0), "", "");
 
 # arrows
@@ -101,7 +103,6 @@ swipey = {shift+home}{backspace};
 swipey <n> = {shift+up_$1}{shift+home}{backspace};
 
 dodge = {esc} If(TimeContext.Restart("select", 0), "", "");
-grab line = {home}{shift+end} TimeContext.Start("select", 40, "noop()");
 
 # wrappers
 angel = "<>"{left};

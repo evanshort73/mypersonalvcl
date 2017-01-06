@@ -15,4 +15,3 @@ tack restore = {ctrl+shift+t};
 venture = {ctrl+p};
 reinstate = {ctrl+y};
 treeview = {ctrl+shift+\};
-grab word = {ctrl+d} TimeContext.Start("select", 40, "noop()");

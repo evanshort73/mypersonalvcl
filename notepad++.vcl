@@ -9,4 +9,3 @@ tack lap <n> = {ctrl+pgup_$1};
 tack new = {ctrl+n};
 tack restore = {ctrl+shift+t};
 reinstate = {ctrl+y};
-grab word = {ctrl+f}{esc} TimeContext.Start("select", 40, "noop()");
