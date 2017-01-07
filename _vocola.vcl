@@ -2,7 +2,7 @@
 
 # numbers
 <d> := 0..9;
-bay <d> = $1;
+pay <d> = $1;
 <n> := 0..50;
 
 # letters
@@ -35,9 +35,9 @@ bay <d> = $1;
   | zebra = z
   );
 <a> = If(TimeContext.Restart("capslock"), {shift+$1}, $1);
-bay <a> = {shift+$1};
-bay lock = TimeContext.Start("capslock", 40, "noop()");
-bay unlock = If(TimeContext.Restart("capslock", 0), "", "");
+pay <a> = {shift+$1};
+pay lock = TimeContext.Start("capslock", 40, "noop()");
+pay unlock = If(TimeContext.Restart("capslock", 0), "", "");
 
 grab = TimeContext.Start("select", 40, "noop()");
 control grab = TimeContext.Start("controlselect", 40, "noop()");
@@ -206,12 +206,12 @@ bearsy <n> =
         rightEdge() {down_$1} {end} selectLines($1)));
 
 # long-range arrows
-bay lap = If(TimeContext.Restart("select"), {shift+home}, {home});
-bay tar = If(TimeContext.Restart("select"), {shift+end}, {end});
-bay wick = If(TimeContext.Restart("select"), {shift+pgup}, {pgup});
-bay bear = If(TimeContext.Restart("select"), {shift+pgdn}, {pgdn});
-bay wick <n> = If(TimeContext.Restart("select"), {shift+pgup_$1}, {pgup_$1});
-bay bear <n> = If(TimeContext.Restart("select"), {shift+pgdn_$1}, {pgdn_$1});
+pay lap = If(TimeContext.Restart("select"), {shift+home}, {home});
+pay tar = If(TimeContext.Restart("select"), {shift+end}, {end});
+pay wick = If(TimeContext.Restart("select"), {shift+pgup}, {pgup});
+pay bear = If(TimeContext.Restart("select"), {shift+pgdn}, {pgdn});
+pay wick <n> = If(TimeContext.Restart("select"), {shift+pgup_$1}, {pgup_$1});
+pay bear <n> = If(TimeContext.Restart("select"), {shift+pgdn_$1}, {pgdn_$1});
 
 # repeatable keys
 <repeatable> :=
@@ -233,8 +233,8 @@ chop <n> =
   {enter_$1}
   If(TimeContext.Restart("select", 0), "", "")
   If(TimeContext.Restart("controlselect", 0), "", "");
-choppy = rightEdge() {end}{enter} If(TimeContext.Restart("select", 0), "", "");
-choppy <n> = rightEdge() {end}{enter_$1} If(TimeContext.Restart("select", 0), "", "");
+pay chop = rightEdge() {end}{enter} If(TimeContext.Restart("select", 0), "", "");
+pay chop <n> = rightEdge() {end}{enter_$1} If(TimeContext.Restart("select", 0), "", "");
 
 dodge =
   {esc}
@@ -250,9 +250,9 @@ stringy = '""'{left};
 singly = "''"{left};
 
 # multiline wrappers
-bay inset = "()"{left}{enter}{up}{end};
-bay bracken = "[]"{left}{enter}{up}{end};
-bay curly = "{}"{left}{enter}{up}{end};
+pay inset = "()"{left}{enter}{up}{end};
+pay bracken = "[]"{left}{enter}{up}{end};
+pay curly = "{}"{left}{enter}{up}{end};
 
 # punctuation
 adjourn = ";";
@@ -287,9 +287,9 @@ slash = "/";
   | compass = "->"
   );
 <spaced> = " $1 ";
-bay <spaced> = $1;
+pay <spaced> = $1;
 comma = ", ";
-bay comma = ",";
+pay comma = ",";
 
 # scrolling
 # to make this work, I had to add the following code at line 136 of
@@ -320,8 +320,8 @@ nab all =
   If(TimeContext.Restart("controlselect", 0), "", "");
 spill = {ctrl+v} If(TimeContext.Restart("select", 0), "", "");
 spill <d> = {ctrl+v_$1} If(TimeContext.Restart("select", 0), "", "");
-spilly = rightEdge() {end}{ctrl+v} If(TimeContext.Restart("select", 0), "", "");
-spilly <d> = rightEdge() {end}{ctrl+v_$1} If(TimeContext.Restart("select", 0), "", "");
+pay spill = rightEdge() {end}{ctrl+v} If(TimeContext.Restart("select", 0), "", "");
+pay spill <d> = rightEdge() {end}{ctrl+v_$1} If(TimeContext.Restart("select", 0), "", "");
 stow = {ctrl+s};
 forage = {ctrl+f} If(TimeContext.Restart("select", 0), "", "");
 
