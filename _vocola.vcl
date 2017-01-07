@@ -307,7 +307,7 @@ ripple = Keys.SendInput({wheelup_1});
 ripple <d> = Keys.SendInput({wheelup_$1});
 
 # common shortcuts
-revoke = {ctrl+z} If(TimeContext.Restart("select", 0), "", "");
+verse = {ctrl+z} If(TimeContext.Restart("select", 0), "", "");
 grab all =
   {ctrl+a}
   If(TimeContext.Restart("select", 0), "", "")

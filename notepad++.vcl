@@ -8,4 +8,4 @@ tack lap = {ctrl+pgup};
 tack lap <n> = {ctrl+pgup_$1};
 tack new = {ctrl+n};
 tack restore = {ctrl+shift+t};
-reinstate = {ctrl+y};
+vercy = {ctrl+y};
