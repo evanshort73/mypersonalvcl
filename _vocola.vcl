@@ -328,6 +328,10 @@ pay spill <d> = rightEdge() {end}{ctrl+v_$1} If(TimeContext.Restart("select", 0)
 stow = {ctrl+s};
 forage = {ctrl+f} If(TimeContext.Restart("select", 0), "", "");
 
+# for Ditto Clipboard Manager, http://ditto-cp.sourceforge.net/
+spilly = SendSystemKeys({ctrl+`}) If(TimeContext.Restart("select", 0), "", "");
+spilly <d> = SendSystemKeys({ctrl+`}$1) If(TimeContext.Restart("select", 0), "", "");
+
 flip = SendSystemKeys({ctrl+alt+tab}) TimeContext.Start("system", 1, "noop()");
 flip <d> = SendSystemKeys({ctrl+alt+tab_$1}) TimeContext.Start("system", 1, "noop()");
 window left = SendSystemKeys({win+left});
