@@ -1,8 +1,9 @@
 # Global voice commands
 
 # numbers
-<n> := 0..100;
-bay <n> = $1;
+<d> := 0..9;
+bay <d> = $1;
+<n> := 0..50;
 
 # letters
 <a> :=
@@ -102,49 +103,115 @@ bear <n> =
            {ctrl+down_$1},
            {down_$1})));
 
-# selecting arrows
-lappy =
-  If(TimeContext.Restart("select"),
-     ctrl+shift+left},
-     {ctrl+left}{shift+ctrl+right});
-taree =
-  If(TimeContext.Restart("select"),
-     {ctrl+shift+right},
-     {ctrl+right}{shift+ctrl+left});
-wiki =
-  If(TimeContext.Restart("select"),
-     {shift+up}{shift+end},
-     {end}{up}{end}{shift+down}{shift+end});
-berry =
-  If(TimeContext.Restart("select"),
-     {shift+right}{shift+end},
-     {end}{shift+home});
+rightEdge() := {shift+left}{right}; # go to right side of backward selection
+leftEdge() := {shift+left}{left}{right}; # go to left side of backward selection
+wordEnd() := {ctrl+left}{ctrl+right}; # go to right side of word under cursor
+prevWordEnd() := {ctrl+right}{ctrl+left_2}{ctrl+right}; # if we're between words, stay there
+skipWords(n) := {ctrl+right_ $n}; # move n words forwards
+selectWords(n) := {shift+ctrl+left_ $n}; # select n words backwards
+selectLine() := {shift+home}{shift+home}{shift+left}; # select previous newline without pressing up
+selectLines(n) := {shift+up_ Eval("$n - 1")}{shift+end}{shift+home}{shift+home}{shift+left};
+isNotSelecting() := EvalTemplate('%s == "False" and %s == "False"', TimeContext.Restart("select"), TimeContext.Restart("controlselect"));
 
-# repeat selecting arrows
+# inside selecting arrows
+nabby =
+  If(isNotSelecting(),
+     rightEdge() wordEnd() selectWords(1) {ctrl+c});
+lappy =
+  If(isNotSelecting(),
+     rightEdge() wordEnd() selectWords(1));
+taree =
+  If(isNotSelecting(),
+     leftEdge() skipWords(1) selectWords(1));
+wiki =
+  If(isNotSelecting(),
+     rightEdge() {end} selectLine());
+berry =
+  If(isNotSelecting(),
+     {left}{right} {end} selectLine());
+
+# repeat inside selecting arrows
+nabby <n> =
+  If(isNotSelecting(),
+     rightEdge() wordEnd() selectWords($1) {ctrl+c});
 lappy <n> =
-  If(TimeContext.Restart("select"),
-     {ctrl+shift+left_$1},
-     {ctrl+left_$1}{shift+ctrl+right_$1});
+  If(isNotSelecting(),
+     rightEdge() wordEnd() selectWords($1));
 taree <n> =
-  If(TimeContext.Restart("select"),
-     {ctrl+shift+right_$1},
-     {ctrl+right_$1}{shift+ctrl+left_$1});
+  If(isNotSelecting(),
+     leftEdge() skipWords($1) selectWords($1));
 wiki <n> =
-  If(TimeContext.Restart("select"),
-     {shift+up_$1}{shift+end},
-     {end}{up_$1}{end}{shift+down_$1}{shift+end});
+  If(isNotSelecting(),
+     rightEdge() {end} selectLines($1));
 berry <n> =
-  If(TimeContext.Restart("select"),
-     {shift+right}{shift+down_ Eval("$1 - 1")}{shift+end},
-     {end}{down_ Eval("$1 - 1")}{end}{shift+up_ Eval("$1 - 1")}{shift+end}{shift+home});
+  If(isNotSelecting(),
+     {left}{right} {down_ Eval("$1 - 1")} {end} selectLines($1));
+
+# outside selecting arrows
+nabsy =
+  If(isNotSelecting(),
+     leftEdge() prevWordEnd() selectWords(1) {ctrl+c});
+lapsy =
+  If(TimeContext.Restart("controlselect"),
+     "",
+     If(TimeContext.Restart("select"),
+        {shift+ctrl+left},
+        leftEdge() prevWordEnd() selectWords(1)));
+tarzy =
+  If(TimeContext.Restart("controlselect"),
+     "",
+     If(TimeContext.Restart("select"),
+        {shift+ctrl+right},
+        rightEdge() wordEnd() skipWords(1) selectWords(1)));
+wicksy =
+  If(TimeContext.Restart("controlselect"),
+     "",
+     If(TimeContext.Restart("select"),
+        {shift+end} selectLine(),
+        {left}{right}{up} {end} selectLine()));
+bearsy =
+  If(TimeContext.Restart("controlselect"),
+     "",
+     If(TimeContext.Restart("select"),
+        {shift+right}{shift+end},
+        rightEdge() {down} {end} selectLine()));
+
+# repeat outside selecting arrows
+nabsy <n> =
+  If(isNotSelecting(),
+     leftEdge() prevWordEnd() selectWords($1) {ctrl+c});
+lapsy <n> =
+  If(TimeContext.Restart("controlselect"),
+     "",
+     If(TimeContext.Restart("select"),
+        {shift+ctrl+left_$1},
+        leftEdge() prevWordEnd() selectWords($1)));
+tarzy <n> =
+  If(TimeContext.Restart("controlselect"),
+     "",
+     If(TimeContext.Restart("select"),
+        {shift+ctrl+right_$1},
+        rightEdge() wordEnd() skipWords($1) selectWords($1)));
+wicksy <n> =
+  If(TimeContext.Restart("controlselect"),
+     "",
+     If(TimeContext.Restart("select"),
+        selectLines($1),
+        {left}{right}{up} {end} selectLines($1)));
+bearsy <n> =
+  If(TimeContext.Restart("controlselect"),
+     "",
+     If(TimeContext.Restart("select"),
+        {shift+right} {shift+down_ Eval("$1 - 1")} {shift+end},
+        rightEdge() {down_$1} {end} selectLines($1)));
 
 # long-range arrows
-lapsy = If(TimeContext.Restart("select"), {shift+home}, {home});
-tarzy = If(TimeContext.Restart("select"), {shift+end}, {end});
-wicksy = If(TimeContext.Restart("select"), {shift+pgup}, {pgup});
-bearsy = If(TimeContext.Restart("select"), {shift+pgdn}, {pgdn});
-wicksy <n> = If(TimeContext.Restart("select"), {shift+pgup_$1}, {pgup_$1});
-bearsy <n> = If(TimeContext.Restart("select"), {shift+pgdn_$1}, {pgdn_$1});
+bay lap = If(TimeContext.Restart("select"), {shift+home}, {home});
+bay tar = If(TimeContext.Restart("select"), {shift+end}, {end});
+bay wick = If(TimeContext.Restart("select"), {shift+pgup}, {pgup});
+bay bear = If(TimeContext.Restart("select"), {shift+pgdn}, {pgdn});
+bay wick <n> = If(TimeContext.Restart("select"), {shift+pgup_$1}, {pgup_$1});
+bay bear <n> = If(TimeContext.Restart("select"), {shift+pgdn_$1}, {pgdn_$1});
 
 # repeatable keys
 <repeatable> :=
@@ -166,8 +233,8 @@ chop <n> =
   {enter_$1}
   If(TimeContext.Restart("select", 0), "", "")
   If(TimeContext.Restart("controlselect", 0), "", "");
-choppy = {end}{enter} If(TimeContext.Restart("select", 0), "", "");
-choppy <n> = {end}{enter_$1} If(TimeContext.Restart("select", 0), "", "");
+choppy = rightEdge() {end}{enter} If(TimeContext.Restart("select", 0), "", "");
+choppy <n> = rightEdge() {end}{enter_$1} If(TimeContext.Restart("select", 0), "", "");
 
 dodge =
   {esc}
@@ -232,9 +299,9 @@ bay comma = ",";
 #     base_event = mouse_wheel_event(horizontal, hold_count * clicks_sign)
 #     return modifiers_down + [base_event] + modifiers_up
 pull = Keys.SendInput({wheeldown_1});
-pull <n> = Keys.SendInput({wheeldown_$1});
+pull <d> = Keys.SendInput({wheeldown_$1});
 ripple = Keys.SendInput({wheelup_1});
-ripple <n> = Keys.SendInput({wheelup_$1});
+ripple <d> = Keys.SendInput({wheelup_$1});
 
 # common shortcuts
 revoke = {ctrl+z} If(TimeContext.Restart("select", 0), "", "");
@@ -243,28 +310,23 @@ grab all =
   If(TimeContext.Restart("select", 0), "", "")
   If(TimeContext.Restart("controlselect", 0), "", "");
 banish = {ctrl+w};
-bottle =
+nab =
   {ctrl+c}
   If(TimeContext.Restart("select", 0), "", "")
   If(TimeContext.Restart("controlselect", 0), "", "");
-bottle <n> =
-  {ctrl+left_$1}{shift+ctrl+right_$1}{ctrl+c}
-  If(TimeContext.Restart("select", 0), "", "");
-tank =
-  {end}{up}{end}{shift+down}{shift+end}{ctrl+c}
-  If(TimeContext.Restart("select", 0), "", "");
-tank <n> =
-  {end}{up_$1}{end}{shift+down_$1}{shift+end}{ctrl+c}
-  If(TimeContext.Restart("select", 0), "", "");
+nab all =
+  {ctrl+a}{ctrl+c}
+  If(TimeContext.Restart("select", 0), "", "")
+  If(TimeContext.Restart("controlselect", 0), "", "");
 spill = {ctrl+v} If(TimeContext.Restart("select", 0), "", "");
-spill <n> = {ctrl+v_$1} If(TimeContext.Restart("select", 0), "", "");
-spilly = {end}{ctrl+v} If(TimeContext.Restart("select", 0), "", "");
-spilly <n> = {end}{ctrl+v_$1} If(TimeContext.Restart("select", 0), "", "");
+spill <d> = {ctrl+v_$1} If(TimeContext.Restart("select", 0), "", "");
+spilly = rightEdge() {end}{ctrl+v} If(TimeContext.Restart("select", 0), "", "");
+spilly <d> = rightEdge() {end}{ctrl+v_$1} If(TimeContext.Restart("select", 0), "", "");
 stow = {ctrl+s};
 forage = {ctrl+f} If(TimeContext.Restart("select", 0), "", "");
 
 flip = SendSystemKeys({ctrl+alt+tab}) TimeContext.Start("system", 1, "noop()");
-flip <n> = SendSystemKeys({ctrl+alt+tab_$1}) TimeContext.Start("system", 1, "noop()");
+flip <d> = SendSystemKeys({ctrl+alt+tab_$1}) TimeContext.Start("system", 1, "noop()");
 window left = SendSystemKeys({win+left});
 window right = SendSystemKeys({win+right});
 
@@ -290,5 +352,5 @@ snake <_anything> = EvalTemplate("'_'.join(%s.lower().split())", $1);
 scream <_anything> = EvalTemplate("'_'.join(%s.upper().split())", $1);
 kebab <_anything> = EvalTemplate("'-'.join(%s.lower().split())", $1);
 
-fuse it = {ctrl+left}{backspace}{ctrl+right};
-snake it = {ctrl+left}{shift+left} "_" {ctrl+right};
+fuse it = leftEdge() {ctrl+left}{backspace}{ctrl+right};
+snake it = leftEdge() {ctrl+left}{shift+left} "_" {ctrl+right};
