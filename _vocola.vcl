@@ -39,9 +39,12 @@ pay <a> = {shift+$1};
 pay lock = TimeContext.Start("capslock", 40, "noop()");
 pay unlock = If(TimeContext.Restart("capslock", 0), "", "");
 
-grab = TimeContext.Start("select", 40, "noop()");
-control grab = TimeContext.Start("controlselect", 40, "noop()");
-jetsam = If(TimeContext.Restart("select", 0), "", "") If(TimeContext.Restart("controlselect", 0), "", "");
+grab =
+  TimeContext.Start("select", 40, "noop()")
+  If(TimeContext.Restart("controlselect", 0), "", "");
+jetsam =
+  If(TimeContext.Restart("select", 0), "", "")
+  If(TimeContext.Restart("controlselect", 0), "", "");
 
 # arrows
 lap =
