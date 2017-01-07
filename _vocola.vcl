@@ -308,6 +308,7 @@ ripple <d> = Keys.SendInput({wheelup_$1});
 
 # common shortcuts
 verse = {ctrl+z} If(TimeContext.Restart("select", 0), "", "");
+vercy = {ctrl+y} If(TimeContext.Restart("select", 0), "", "");
 grab all =
   {ctrl+a}
   If(TimeContext.Restart("select", 0), "", "")
@@ -331,6 +332,8 @@ forage = {ctrl+f} If(TimeContext.Restart("select", 0), "", "");
 # for Ditto Clipboard Manager, http://ditto-cp.sourceforge.net/
 spilly = SendSystemKeys({ctrl+`}) If(TimeContext.Restart("select", 0), "", "");
 spilly <d> = SendSystemKeys({ctrl+`}$1) If(TimeContext.Restart("select", 0), "", "");
+pay spilly = rightEdge() {end} SendSystemKeys({ctrl+`}) If(TimeContext.Restart("select", 0), "", "");
+pay spilly <d> = rightEdge() {end} SendSystemKeys({ctrl+`}$1) If(TimeContext.Restart("select", 0), "", "");
 
 flip = SendSystemKeys({ctrl+alt+tab}) TimeContext.Start("system", 1, "noop()");
 flip <d> = SendSystemKeys({ctrl+alt+tab_$1}) TimeContext.Start("system", 1, "noop()");

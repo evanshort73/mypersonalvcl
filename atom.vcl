@@ -14,5 +14,4 @@ tack lap <n> = {ctrl+pgup_$1};
 tack new = {ctrl+n};
 tack restore = {ctrl+shift+t};
 venture = {ctrl+p};
-vercy = {ctrl+y};
 treeview = {ctrl+shift+\};
