@@ -11,5 +11,4 @@ control grab =
   If(TimeContext.Restart("select", 0), "", "");
 range =
   If(TimeContext.Restart("controlselect", 0),
-     {ctrl+shift+space},
-     {shift+space});
+     {ctrl+shift+space});
