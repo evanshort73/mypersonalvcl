@@ -2,7 +2,7 @@
 
 # numbers
 <d> := 0..9;
-bay <d> = $1;
+Kai <d> = $1;
 <n> := 0..50;
 
 # letters
@@ -35,9 +35,9 @@ bay <d> = $1;
   | zebra = z
   );
 <a> = If(TimeContext.Restart("capslock"), {shift+$1}, $1);
-bay <a> = {shift+$1};
-bay lock = TimeContext.Start("capslock", 40, "noop()");
-bay unlock = If(TimeContext.Restart("capslock", 0), "", "");
+Kai <a> = {shift+$1};
+Kai lock = TimeContext.Start("capslock", 40, "noop()");
+Kai unlock = If(TimeContext.Restart("capslock", 0), "", "");
 
 grab =
   TimeContext.Start("select", 40, "noop()")
@@ -209,12 +209,12 @@ bearsy <n> =
         rightEdge() {down_$1} {end} selectLines($1)));
 
 # long-range arrows
-bay lap = If(TimeContext.Restart("select"), {shift+home}, {home});
-bay tar = If(TimeContext.Restart("select"), {shift+end}, {end});
-bay wick = If(TimeContext.Restart("select"), {shift+pgup}, {pgup});
-bay bear = If(TimeContext.Restart("select"), {shift+pgdn}, {pgdn});
-bay wick <n> = If(TimeContext.Restart("select"), {shift+pgup_$1}, {pgup_$1});
-bay bear <n> = If(TimeContext.Restart("select"), {shift+pgdn_$1}, {pgdn_$1});
+Kai lap = If(TimeContext.Restart("select"), {shift+home}, {home});
+Kai tar = If(TimeContext.Restart("select"), {shift+end}, {end});
+Kai wick = If(TimeContext.Restart("select"), {shift+pgup}, {pgup});
+Kai bear = If(TimeContext.Restart("select"), {shift+pgdn}, {pgdn});
+Kai wick <n> = If(TimeContext.Restart("select"), {shift+pgup_$1}, {pgup_$1});
+Kai bear <n> = If(TimeContext.Restart("select"), {shift+pgdn_$1}, {pgdn_$1});
 
 # repeatable keys
 <repeatable> :=
@@ -236,8 +236,8 @@ chop <n> =
   {enter_$1}
   If(TimeContext.Restart("select", 0), "", "")
   If(TimeContext.Restart("controlselect", 0), "", "");
-bay chop = rightEdge() {end}{enter} If(TimeContext.Restart("select", 0), "", "");
-bay chop <n> = rightEdge() {end}{enter_$1} If(TimeContext.Restart("select", 0), "", "");
+Kai chop = rightEdge() {end}{enter} If(TimeContext.Restart("select", 0), "", "");
+Kai chop <n> = rightEdge() {end}{enter_$1} If(TimeContext.Restart("select", 0), "", "");
 
 dodge =
   {esc}
@@ -253,9 +253,9 @@ stringy = '""'{left};
 singly = "''"{left};
 
 # multiline wrappers
-bay inset = "()"{left}{enter}{up}{end};
-bay bracken = "[]"{left}{enter}{up}{end};
-bay curly = "{}"{left}{enter}{up}{end};
+Kai inset = "()"{left}{enter}{up}{end};
+Kai bracken = "[]"{left}{enter}{up}{end};
+Kai curly = "{}"{left}{enter}{up}{end};
 
 # punctuation
 adjourn = ";";
@@ -290,9 +290,9 @@ slash = "/";
   | compass = "->"
   );
 <spaced> = " $1 ";
-bay <spaced> = $1;
+Kai <spaced> = $1;
 sever = ", ";
-bay sever = ",";
+Kai sever = ",";
 
 # scrolling
 # to make this work, I had to add the following code at line 136 of
@@ -324,16 +324,16 @@ nab all =
   If(TimeContext.Restart("controlselect", 0), "", "");
 spill = {ctrl+v} If(TimeContext.Restart("select", 0), "", "");
 spill <d> = {ctrl+v_$1} If(TimeContext.Restart("select", 0), "", "");
-bay spill = rightEdge() {end}{ctrl+v} If(TimeContext.Restart("select", 0), "", "");
-bay spill <d> = rightEdge() {end}{ctrl+v_$1} If(TimeContext.Restart("select", 0), "", "");
+Kai spill = rightEdge() {end}{ctrl+v} If(TimeContext.Restart("select", 0), "", "");
+Kai spill <d> = rightEdge() {end}{ctrl+v_$1} If(TimeContext.Restart("select", 0), "", "");
 stow = {ctrl+s};
 forage = {ctrl+f} If(TimeContext.Restart("select", 0), "", "");
 
 # for Ditto Clipboard Manager, http://ditto-cp.sourceforge.net/
 spilly = SendSystemKeys({ctrl+`}) If(TimeContext.Restart("select", 0), "", "");
 spilly <d> = SendSystemKeys({ctrl+`}$1) If(TimeContext.Restart("select", 0), "", "");
-bay spilly = rightEdge() {end} SendSystemKeys({ctrl+`}) If(TimeContext.Restart("select", 0), "", "");
-bay spilly <d> = rightEdge() {end} SendSystemKeys({ctrl+`}$1) If(TimeContext.Restart("select", 0), "", "");
+Kai spilly = rightEdge() {end} SendSystemKeys({ctrl+`}) If(TimeContext.Restart("select", 0), "", "");
+Kai spilly <d> = rightEdge() {end} SendSystemKeys({ctrl+`}$1) If(TimeContext.Restart("select", 0), "", "");
 
 flip = SendSystemKeys({ctrl+alt+tab}) TimeContext.Start("system", 1, "noop()");
 flip <d> = SendSystemKeys({ctrl+alt+tab_$1}) TimeContext.Start("system", 1, "noop()");
