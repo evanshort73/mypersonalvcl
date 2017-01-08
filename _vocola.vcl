@@ -18,7 +18,7 @@ pay <d> = $1;
   | imp = i
   | jackal = j
   | kiwi = k
-  | loon = l
+  | lion = l
   | moose = m
   | newt = n
   | orca = o
@@ -221,8 +221,8 @@ pay bear <n> = If(TimeContext.Restart("select"), {shift+pgdn_$1}, {pgdn_$1});
   ( levy = tab
   | lever = shift+tab
   | burn = del
-  | wipe = backspace
-  | nudge = space
+  | swipe = backspace
+  | shove = space
   );
 <repeatable> = {$1} If(TimeContext.Restart("select", 0), "", "");
 <repeatable> <n> = {$1_$2} If(TimeContext.Restart("select", 0), "", "");
@@ -291,8 +291,8 @@ slash = "/";
   );
 <spaced> = " $1 ";
 pay <spaced> = $1;
-comma = ", ";
-pay comma = ",";
+sever = ", ";
+pay sever = ",";
 
 # scrolling
 # to make this work, I had to add the following code at line 136 of
@@ -354,13 +354,25 @@ tug it =
   If(TimeContext.Restart("controlselect", 0), "", "");
 
 # variables
-camel <_anything> = EvalTemplate("%s[0].lower() + ''.join(%s.title().split())[1:]", $1, $1);
-llama <_anything> = EvalTemplate("''.join(%s.title().split())", $1);
-locus <_anything> = EvalTemplate("%s.lower()", $1);
-fuse <_anything> = EvalTemplate("''.join(%s.lower().split())", $1);
-snake <_anything> = EvalTemplate("'_'.join(%s.lower().split())", $1);
-scream <_anything> = EvalTemplate("'_'.join(%s.upper().split())", $1);
-kebab <_anything> = EvalTemplate("'-'.join(%s.lower().split())", $1);
+camel <_anything> = EvalTemplate("%s[0].lower() + %s.title()[1:]", $1, $1);
+Cappy <_anything> = EvalTemplate("%s.title()", $1);
+shy <_anything> = EvalTemplate("%s.lower()", $1);
+scream <_anything> = EvalTemplate("%s.upper()", $1);
 
-fuse it = leftEdge() {ctrl+left}{backspace}{ctrl+right};
-snake it = leftEdge() {ctrl+left}{shift+left} "_" {ctrl+right};
+fuse =
+  leftEdge()
+  {ctrl+left}{backspace}
+  {ctrl+right};
+fuse <d> =
+  leftEdge()
+  Repeat($1, {ctrl+left}{backspace})
+  {ctrl+right_$1};
+snake =
+  leftEdge()
+  {ctrl+left}{shift+left} "_"
+  {ctrl+right};
+snake <d> =
+  leftEdge()
+  Repeat(Eval($1 - 1), {ctrl+left}{shift+left} "_" {left})
+  {ctrl+left}{shift+left} "_"
+  {ctrl+right_$1};

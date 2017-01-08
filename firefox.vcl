@@ -11,3 +11,4 @@ tack restore = {ctrl+shift+t};
 venture = {ctrl+l};
 refresh = {ctrl+r};
 downloads = {ctrl+j};
+forward = {shift+backspace};
