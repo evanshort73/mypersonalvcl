@@ -218,11 +218,11 @@ Kai bear <n> = If(TimeContext.Restart("select"), {shift+pgdn_$1}, {pgdn_$1});
 
 # repeatable keys
 <repeatable> :=
-  ( levy = tab
-  | lever = shift+tab
+  ( spin = tab
+  | spinny = shift+tab
   | burn = del
   | swipe = backspace
-  | shove = space
+  | sky = space
   );
 <repeatable> = {$1} If(TimeContext.Restart("select", 0), "", "");
 <repeatable> <n> = {$1_$2} If(TimeContext.Restart("select", 0), "", "");
