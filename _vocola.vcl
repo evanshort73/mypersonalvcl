@@ -39,71 +39,61 @@ Kai <a> = {shift+$1};
 Kai lock = TimeContext.Start("capslock", 40, "noop()");
 Kai unlock = If(TimeContext.Restart("capslock", 0), "", "");
 
-grab =
-  TimeContext.Start("select", 40, "noop()")
-  If(TimeContext.Restart("controlselect", 0), "", "");
-jetsam =
-  If(TimeContext.Restart("select", 0), "", "")
-  If(TimeContext.Restart("controlselect", 0), "", "");
+selecting() := TimeContext.Restart("select");
+collecting() := TimeContext.Restart("controlselect");
+stopSelecting() := If(TimeContext.Restart("select", 0), "", "");
+stopCollecting() := If(TimeContext.Restart("controlselect", 0), "", "");
+notCollecting() := EvalTemplate('%s == "False"', collecting());
+neitherSelecting() :=
+  EvalTemplate('%s == "False" and %s == "False"', selecting(), collecting());
+
+grab = TimeContext.Start("select", 40, "noop()") stopCollecting();
+jetsam = stopSelecting() stopCollecting();
 
 # arrows
 lap =
-  If(TimeContext.Restart("select"),
-     {shift+left},
-     If(TimeContext.Restart("controlselect"),
-        {ctrl+left},
+  If(selecting(), {shift+left},
+     If(collecting(), {ctrl+left},
         {left}));
 tar =
-  If(TimeContext.Restart("select"),
-     {shift+right},
-     If(TimeContext.Restart("controlselect"),
-        {ctrl+right},
+  If(selecting(), {shift+right},
+     If(collecting(), {ctrl+right},
         {right}));
 wick =
   If(TimeContext.Restart("volume"),
      Keys.SendInput({VolumeUp_5}),
-     If(TimeContext.Restart("select"),
-        {shift+up},
-        If(TimeContext.Restart("controlselect"),
-           {ctrl+up},
+     If(selecting(), {shift+up},
+        If(collecting(), {ctrl+up},
            {up})));
 bear =
   If(TimeContext.Restart("volume"),
      Keys.SendInput({VolumeDown_5}),
-     If(TimeContext.Restart("select"),
-        {shift+down},
-        If(TimeContext.Restart("controlselect"),
-           {ctrl+down},
+     If(selecting(), {shift+down},
+        If(collecting(), {ctrl+down},
            {down})));
 
 # repeat arrows
 lap <n> =
-  If(TimeContext.Restart("select"),
-     {shift+left_$1},
-     If(TimeContext.Restart("controlselect"),
-        {ctrl+left_$1},
+  If(selecting(), {shift+left_$1},
+     If(collecting(), {ctrl+left_$1},
         {left_$1}));
 tar <n> =
-  If(TimeContext.Restart("select"),
+  If(selecting(),
      {shift+right_$1},
-     If(TimeContext.Restart("controlselect"),
+     If(collecting(),
         {ctrl+right_$1},
         {right_$1}));
 wick <n> =
   If(TimeContext.Restart("volume"),
      Keys.SendInput({VolumeUp_ Eval("$1 * 5")}),
-     If(TimeContext.Restart("select"),
-        {shift+up_$1},
-        If(TimeContext.Restart("controlselect"),
-           {ctrl+up_$1},
+     If(selecting(), {shift+up_$1},
+        If(collecting(), {ctrl+up_$1},
            {up_$1})));
 bear <n> =
   If(TimeContext.Restart("volume"),
      Keys.SendInput({VolumeDown_ Eval("$1 * 5")}),
-     If(TimeContext.Restart("select"),
-        {shift+down_$1},
-        If(TimeContext.Restart("controlselect"),
-           {ctrl+down_$1},
+     If(selecting(), {shift+down_$1},
+        If(collecting(), {ctrl+down_$1},
            {down_$1})));
 
 rightEdge() := {shift+left}{right}; # go to right side of backward selection
@@ -114,107 +104,90 @@ skipWords(n) := {ctrl+right_ $n}; # move n words forwards
 selectWords(n) := {shift+ctrl+left_ $n}; # select n words backwards
 selectLine() := {shift+home}{shift+home}{shift+left}; # select previous newline without pressing up
 selectLines(n) := {shift+up_ Eval("$n - 1")}{shift+end}{shift+home}{shift+home}{shift+left};
-isNotSelecting() := EvalTemplate('%s == "False" and %s == "False"', TimeContext.Restart("select"), TimeContext.Restart("controlselect"));
 
 # inside selecting arrows
 nabby =
-  If(isNotSelecting(),
+  If(neitherSelecting(),
      rightEdge() wordEnd() selectWords(1) {ctrl+c});
 lappy =
-  If(isNotSelecting(),
+  If(neitherSelecting(),
      rightEdge() wordEnd() selectWords(1));
 taree =
-  If(isNotSelecting(),
+  If(neitherSelecting(),
      leftEdge() skipWords(1) selectWords(1));
 wiki =
-  If(isNotSelecting(),
+  If(neitherSelecting(),
      rightEdge() {end} selectLine());
 berry =
-  If(isNotSelecting(),
+  If(neitherSelecting(),
      {left}{right} {end} selectLine());
 
 # repeat inside selecting arrows
 nabby <n> =
-  If(isNotSelecting(),
+  If(neitherSelecting(),
      rightEdge() wordEnd() selectWords($1) {ctrl+c});
 lappy <n> =
-  If(isNotSelecting(),
+  If(neitherSelecting(),
      rightEdge() wordEnd() selectWords($1));
 taree <n> =
-  If(isNotSelecting(),
+  If(neitherSelecting(),
      leftEdge() skipWords($1) selectWords($1));
 wiki <n> =
-  If(isNotSelecting(),
+  If(neitherSelecting(),
      rightEdge() {end} selectLines($1));
 berry <n> =
-  If(isNotSelecting(),
+  If(neitherSelecting(),
      {left}{right} {down_ Eval("$1 - 1")} {end} selectLines($1));
 
 # outside selecting arrows
 nabsy =
-  If(isNotSelecting(),
+  If(neitherSelecting(),
      leftEdge() prevWordEnd() selectWords(1) {ctrl+c});
 lapsy =
-  If(TimeContext.Restart("controlselect"),
-     "",
-     If(TimeContext.Restart("select"),
-        {shift+ctrl+left},
+  If(notCollecting(),
+     If(selecting(), {shift+ctrl+left},
         leftEdge() prevWordEnd() selectWords(1)));
 tarzy =
-  If(TimeContext.Restart("controlselect"),
-     "",
-     If(TimeContext.Restart("select"),
-        {shift+ctrl+right},
+  If(notCollecting(),
+     If(selecting(), {shift+ctrl+right},
         rightEdge() wordEnd() skipWords(1) selectWords(1)));
 wicksy =
-  If(TimeContext.Restart("controlselect"),
-     "",
-     If(TimeContext.Restart("select"),
-        {shift+end} selectLine(),
+  If(notCollecting(),
+     If(selecting(), {shift+end} selectLine(),
         {left}{right}{up} {end} selectLine()));
 bearsy =
-  If(TimeContext.Restart("controlselect"),
-     "",
-     If(TimeContext.Restart("select"),
-        {shift+right}{shift+end},
+  If(notCollecting(),
+     If(selecting(), {shift+right}{shift+end},
         rightEdge() {down} {end} selectLine()));
 
 # repeat outside selecting arrows
 nabsy <n> =
-  If(isNotSelecting(),
+  If(neitherSelecting(),
      leftEdge() prevWordEnd() selectWords($1) {ctrl+c});
 lapsy <n> =
-  If(TimeContext.Restart("controlselect"),
-     "",
-     If(TimeContext.Restart("select"),
-        {shift+ctrl+left_$1},
+  If(notCollecting(),
+     If(selecting(), {shift+ctrl+left_$1},
         leftEdge() prevWordEnd() selectWords($1)));
 tarzy <n> =
-  If(TimeContext.Restart("controlselect"),
-     "",
-     If(TimeContext.Restart("select"),
-        {shift+ctrl+right_$1},
+  If(notCollecting(),
+     If(selecting(), {shift+ctrl+right_$1},
         rightEdge() wordEnd() skipWords($1) selectWords($1)));
 wicksy <n> =
-  If(TimeContext.Restart("controlselect"),
-     "",
-     If(TimeContext.Restart("select"),
-        selectLines($1),
+  If(notCollecting(),
+     If(selecting(), selectLines($1),
         {left}{right}{up} {end} selectLines($1)));
 bearsy <n> =
-  If(TimeContext.Restart("controlselect"),
-     "",
-     If(TimeContext.Restart("select"),
-        {shift+right} {shift+down_ Eval("$1 - 1")} {shift+end},
+  If(notCollecting(),
+     If(selecting(), {shift+right} {shift+down_ Eval("$1 - 1")} {shift+end},
         rightEdge() {down_$1} {end} selectLines($1)));
 
 # long-range arrows
-Kai lap = If(TimeContext.Restart("select"), {shift+home}, {home});
-Kai tar = If(TimeContext.Restart("select"), {shift+end}, {end});
-Kai wick = If(TimeContext.Restart("select"), {shift+pgup}, {pgup});
-Kai bear = If(TimeContext.Restart("select"), {shift+pgdn}, {pgdn});
-Kai wick <n> = If(TimeContext.Restart("select"), {shift+pgup_$1}, {pgup_$1});
-Kai bear <n> = If(TimeContext.Restart("select"), {shift+pgdn_$1}, {pgdn_$1});
+Kai lap = If(selecting(), {shift+home}, {home});
+Kai tar = If(selecting(), {shift+end}, {end});
+Kai wick = If(selecting(), {shift+pgup}, {pgup});
+Kai bear = If(selecting(), {shift+pgdn}, {pgdn});
+Kai wick <n> = If(selecting(), {shift+pgup_$1}, {pgup_$1});
+Kai bear <n> = If(selecting(), {shift+pgdn_$1}, {pgdn_$1});
 
 # repeatable keys
 <repeatable> :=
@@ -224,25 +197,21 @@ Kai bear <n> = If(TimeContext.Restart("select"), {shift+pgdn_$1}, {pgdn_$1});
   | swipe = backspace
   | sky = space
   );
-<repeatable> = {$1} If(TimeContext.Restart("select", 0), "", "");
-<repeatable> <n> = {$1_$2} If(TimeContext.Restart("select", 0), "", "");
+<repeatable> = {$1} stopSelecting();
+<repeatable> <n> = {$1_$2} stopSelecting();
 chop =
   If(TimeContext.Restart("system", 0),
      SendSystemKeys({enter}),
      {enter})
-  If(TimeContext.Restart("select", 0), "", "")
-  If(TimeContext.Restart("controlselect", 0), "", "");
-chop <n> =
-  {enter_$1}
-  If(TimeContext.Restart("select", 0), "", "")
-  If(TimeContext.Restart("controlselect", 0), "", "");
-Kai chop = rightEdge() {end}{enter} If(TimeContext.Restart("select", 0), "", "");
-Kai chop <n> = rightEdge() {end}{enter_$1} If(TimeContext.Restart("select", 0), "", "");
+  stopSelecting() stopCollecting();
+chop <n> = {enter_$1} stopSelecting() stopCollecting();
+Kai chop = rightEdge() {end}{enter} stopSelecting();
+Kai chop <n> = rightEdge() {end}{enter_$1} stopSelecting();
 
 dodge =
   {esc}
   If(TimeContext.Restart("select", 0), {right}, "")
-  If(TimeContext.Restart("controlselect", 0), "", "");
+  stopCollecting();
 
 # wrappers
 angel = "<>"{left};
@@ -307,33 +276,24 @@ ripple = Keys.SendInput({wheelup_1});
 ripple <d> = Keys.SendInput({wheelup_$1});
 
 # common shortcuts
-verse = {ctrl+z} If(TimeContext.Restart("select", 0), "", "");
-vercy = {ctrl+y} If(TimeContext.Restart("select", 0), "", "");
-grab all =
-  {ctrl+a}
-  If(TimeContext.Restart("select", 0), "", "")
-  If(TimeContext.Restart("controlselect", 0), "", "");
+verse = {ctrl+z} stopSelecting();
+vercy = {ctrl+y} stopSelecting();
+grab all = {ctrl+a} stopSelecting() stopCollecting();
 banish = {ctrl+w};
-nab =
-  {ctrl+c}
-  If(TimeContext.Restart("select", 0), "", "")
-  If(TimeContext.Restart("controlselect", 0), "", "");
-nab all =
-  {ctrl+a}{ctrl+c}
-  If(TimeContext.Restart("select", 0), "", "")
-  If(TimeContext.Restart("controlselect", 0), "", "");
-spill = {ctrl+v} If(TimeContext.Restart("select", 0), "", "");
-spill <d> = {ctrl+v_$1} If(TimeContext.Restart("select", 0), "", "");
-Kai spill = rightEdge() {end}{ctrl+v} If(TimeContext.Restart("select", 0), "", "");
-Kai spill <d> = rightEdge() {end}{ctrl+v_$1} If(TimeContext.Restart("select", 0), "", "");
+nab = {ctrl+c} stopSelecting() stopCollecting();
+nab all = {ctrl+a}{ctrl+c} stopSelecting() stopCollecting();
+spill = {ctrl+v} stopSelecting();
+spill <d> = {ctrl+v_$1} stopSelecting();
+Kai spill = rightEdge() {end}{ctrl+v} stopSelecting();
+Kai spill <d> = rightEdge() {end}{ctrl+v_$1} stopSelecting();
 stow = {ctrl+s};
-forage = {ctrl+f} If(TimeContext.Restart("select", 0), "", "");
+forage = {ctrl+f} stopSelecting();
 
 # for Ditto Clipboard Manager, http://ditto-cp.sourceforge.net/
-spilly = SendSystemKeys({ctrl+`}) If(TimeContext.Restart("select", 0), "", "");
-spilly <d> = SendSystemKeys({ctrl+`}$1) If(TimeContext.Restart("select", 0), "", "");
-Kai spilly = rightEdge() {end} SendSystemKeys({ctrl+`}) If(TimeContext.Restart("select", 0), "", "");
-Kai spilly <d> = rightEdge() {end} SendSystemKeys({ctrl+`}$1) If(TimeContext.Restart("select", 0), "", "");
+spilly = SendSystemKeys({ctrl+`}) stopSelecting();
+spilly <d> = SendSystemKeys({ctrl+`}$1) stopSelecting();
+Kai spilly = rightEdge() {end} SendSystemKeys({ctrl+`}) stopSelecting();
+Kai spilly <d> = rightEdge() {end} SendSystemKeys({ctrl+`}$1) stopSelecting();
 
 flip = SendSystemKeys({ctrl+alt+tab}) TimeContext.Start("system", 1, "noop()");
 flip <d> = SendSystemKeys({ctrl+alt+tab_$1}) TimeContext.Start("system", 1, "noop()");
@@ -344,14 +304,8 @@ volley = Keys.SendInput({VolumeUp}{VolumeDown}) TimeContext.Start("volume", 3, "
 mute = Keys.SendInput({VolumeMute});
 
 time context ping = TimeContext.Ping();
-tug <_anything> =
-  MenuPick($1)
-  If(TimeContext.Restart("select", 0), "", "")
-  If(TimeContext.Restart("controlselect", 0), "", "");
-tug it =
-  Keys.SendInput({Apps})
-  If(TimeContext.Restart("select", 0), "", "")
-  If(TimeContext.Restart("controlselect", 0), "", "");
+tug <_anything> = MenuPick($1) stopSelecting() stopCollecting();
+tug it = Keys.SendInput({Apps}) stopSelecting() stopCollecting();
 
 # variables
 camel <_anything> = EvalTemplate("%s[0].lower() + %s.title()[1:]", $1, $1);
