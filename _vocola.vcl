@@ -376,3 +376,15 @@ snake <d> =
   Repeat(Eval($1 - 1), {ctrl+left}{shift+left} "_" {left})
   {ctrl+left}{shift+left} "_"
   {ctrl+right_$1};
+puff =
+  leftEdge()
+  {ctrl+left}{space}
+  {ctrl+right};
+puff <d> =
+  leftEdge()
+  Repeat($1, {ctrl+left}{space})
+  {ctrl+right_$1};
+Dottie =
+  leftEdge()
+  {ctrl+left}{shift+left} "."
+  {ctrl+right};
