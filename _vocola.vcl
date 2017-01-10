@@ -2,7 +2,7 @@
 
 # numbers
 <d> := 0..9;
-Kai <d> = $1;
+fry <d> = $1;
 <n> := 0..50;
 
 # letters
@@ -35,9 +35,9 @@ Kai <d> = $1;
   | zebra = z
   );
 <a> = If(TimeContext.Restart("capslock"), {shift+$1}, $1);
-Kai <a> = {shift+$1};
-Kai lock = TimeContext.Start("capslock", 40, "noop()");
-Kai unlock = If(TimeContext.Restart("capslock", 0), "", "");
+fry <a> = {shift+$1};
+fry lock = TimeContext.Start("capslock", 40, "noop()");
+fry unlock = If(TimeContext.Restart("capslock", 0), "", "");
 
 selecting() := TimeContext.Restart("select");
 collecting() := TimeContext.Restart("controlselect");
@@ -182,12 +182,12 @@ bearsy <n> =
         rightEdge() {down_$1} {end} selectLines($1)));
 
 # long-range arrows
-Kai lap = If(selecting(), {shift+home}, {home});
-Kai tar = If(selecting(), {shift+end}, {end});
-Kai wick = If(selecting(), {shift+pgup}, {pgup});
-Kai bear = If(selecting(), {shift+pgdn}, {pgdn});
-Kai wick <n> = If(selecting(), {shift+pgup_$1}, {pgup_$1});
-Kai bear <n> = If(selecting(), {shift+pgdn_$1}, {pgdn_$1});
+fry lap = If(selecting(), {shift+home}, {home});
+fry tar = If(selecting(), {shift+end}, {end});
+fry wick = If(selecting(), {shift+pgup}, {pgup});
+fry bear = If(selecting(), {shift+pgdn}, {pgdn});
+fry wick <n> = If(selecting(), {shift+pgup_$1}, {pgup_$1});
+fry bear <n> = If(selecting(), {shift+pgdn_$1}, {pgdn_$1});
 
 # repeatable keys
 <repeatable> :=
@@ -205,8 +205,8 @@ chop =
      {enter})
   stopSelecting() stopCollecting();
 chop <n> = {enter_$1} stopSelecting() stopCollecting();
-Kai chop = rightEdge() {end}{enter} stopSelecting();
-Kai chop <n> = rightEdge() {end}{enter_$1} stopSelecting();
+fry chop = rightEdge() {end}{enter} stopSelecting();
+fry chop <n> = rightEdge() {end}{enter_$1} stopSelecting();
 
 dodge =
   {esc}
@@ -222,9 +222,9 @@ stringy = '""'{left};
 singly = "''"{left};
 
 # multiline wrappers
-Kai inset = "()"{left}{enter}{up}{end};
-Kai bracken = "[]"{left}{enter}{up}{end};
-Kai curly = "{}"{left}{enter}{up}{end};
+fry inset = "()"{left}{enter}{up}{end};
+fry bracken = "[]"{left}{enter}{up}{end};
+fry curly = "{}"{left}{enter}{up}{end};
 
 # punctuation
 adjourn = ";";
@@ -259,9 +259,9 @@ slash = "/";
   | compass = "->"
   );
 <spaced> = " $1 ";
-Kai <spaced> = $1;
+fry <spaced> = $1;
 sever = ", ";
-Kai sever = ",";
+fry sever = ",";
 
 # scrolling
 # to make this work, I had to add the following code at line 136 of
@@ -284,16 +284,16 @@ nab = {ctrl+c} stopSelecting() stopCollecting();
 nab all = {ctrl+a}{ctrl+c} stopSelecting() stopCollecting();
 spill = {ctrl+v} stopSelecting();
 spill <d> = {ctrl+v_$1} stopSelecting();
-Kai spill = rightEdge() {end}{ctrl+v} stopSelecting();
-Kai spill <d> = rightEdge() {end}{ctrl+v_$1} stopSelecting();
+fry spill = rightEdge() {end}{ctrl+v} stopSelecting();
+fry spill <d> = rightEdge() {end}{ctrl+v_$1} stopSelecting();
 stow = {ctrl+s};
 forage = {ctrl+f} stopSelecting();
 
 # for Ditto Clipboard Manager, http://ditto-cp.sourceforge.net/
 spilly = SendSystemKeys({ctrl+`}) stopSelecting();
 spilly <d> = SendSystemKeys({ctrl+`}$1) stopSelecting();
-Kai spilly = rightEdge() {end} SendSystemKeys({ctrl+`}) stopSelecting();
-Kai spilly <d> = rightEdge() {end} SendSystemKeys({ctrl+`}$1) stopSelecting();
+fry spilly = rightEdge() {end} SendSystemKeys({ctrl+`}) stopSelecting();
+fry spilly <d> = rightEdge() {end} SendSystemKeys({ctrl+`}$1) stopSelecting();
 
 flip = SendSystemKeys({ctrl+alt+tab}) TimeContext.Start("system", 1, "noop()");
 flip <d> = SendSystemKeys({ctrl+alt+tab_$1}) TimeContext.Start("system", 1, "noop()");
