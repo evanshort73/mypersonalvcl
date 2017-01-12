@@ -36,19 +36,19 @@ fry <d> = $1;
   );
 <a> = If(TimeContext.Restart("capslock"), {shift+$1}, $1);
 fry <a> = {shift+$1};
-fry lock = TimeContext.Start("capslock", 40, "noop()");
-fry unlock = If(TimeContext.Restart("capslock", 0), "", "");
+scream = TimeContext.Start("capslock", 40, "noop()");
 
 selecting() := TimeContext.Restart("select");
 collecting() := TimeContext.Restart("controlselect");
 stopSelecting() := If(TimeContext.Restart("select", 0), "", "");
 stopCollecting() := If(TimeContext.Restart("controlselect", 0), "", "");
+stopCaps() := If(TimeContext.Restart("capslock", 0), "", "");
 notCollecting() := EvalTemplate('%s == "False"', collecting());
 neitherSelecting() :=
   EvalTemplate('%s == "False" and %s == "False"', selecting(), collecting());
 
 grab = TimeContext.Start("select", 40, "noop()") stopCollecting();
-jetsam = stopSelecting() stopCollecting();
+jetsam = stopSelecting() stopCollecting() stopCaps();
 
 # arrows
 lap =
@@ -199,6 +199,8 @@ fry bear <n> = If(selecting(), {shift+pgdn_$1}, {pgdn_$1});
   );
 <repeatable> = {$1} stopSelecting();
 <repeatable> <n> = {$1_$2} stopSelecting();
+sky = {space} stopSelecting() stopCaps();
+sky <n> = {space_$1} stopSelecting() stopCaps();
 chop =
   If(TimeContext.Restart("system", 0),
      SendSystemKeys({enter}),
@@ -228,7 +230,7 @@ fry curly = "{}"{left}{enter}{up}{end};
 
 # punctuation
 adjourn = ";";
-thunder = "_";
+thunder = "_" stopCaps();
 bang = "!";
 pipe = "|";
 dot = ".";
@@ -288,9 +290,12 @@ fry spill = rightEdge() {end}{ctrl+v} stopSelecting();
 fry spill <d> = rightEdge() {end}{ctrl+v_$1} stopSelecting();
 stow = {ctrl+s};
 forage = {ctrl+f} stopSelecting();
-leap <_anything> =
+delve <_anything> =
   If(AnythingNumber.Validate($1),
      {ctrl+g} AnythingNumber.Convert($1) {enter} {end});
+delvy <_anything> =
+  If(AnythingNumber.Validate($1),
+     {ctrl+g} AnythingNumber.Convert($1) {enter} {end} {home});
 
 # for Ditto Clipboard Manager, http://ditto-cp.sourceforge.net/
 spilly = SendSystemKeys({ctrl+`}) stopSelecting();
@@ -319,29 +324,33 @@ scream <_anything> = EvalTemplate("%s.upper()", $1);
 fuse =
   leftEdge()
   {ctrl+left}{backspace}
-  {ctrl+right};
+  {ctrl+right}
+  stopCaps();
 fuse <d> =
   leftEdge()
   Repeat($1, {ctrl+left}{backspace})
-  {ctrl+right_$1};
+  {ctrl+right}
+  stopCaps();
 snake =
   leftEdge()
   {ctrl+left}{shift+left} "_"
-  {ctrl+right};
+  {ctrl+right}
+  stopCaps();
 snake <d> =
   leftEdge()
   Repeat(Eval($1 - 1), {ctrl+left}{shift+left} "_" {left})
   {ctrl+left}{shift+left} "_"
-  {ctrl+right_$1};
+  {ctrl+right}
+  stopCaps();
 puff =
   leftEdge()
   {ctrl+left}{space}
-  {ctrl+right};
+  {ctrl+right}
+  stopCaps();
 puff <d> =
   leftEdge()
   Repeat($1, {ctrl+left}{space})
-  {ctrl+right_$1};
-Dottie =
-  leftEdge()
-  {ctrl+left}{shift+left} "."
-  {ctrl+right};
+  {ctrl+right_$1}
+  stopCaps();
+coalesce = {end}{home}{shift+up}{shift+end}{space};
+coalesce <d> = Repeat($1, {end}{home}{shift+up}{shift+end}{space});

@@ -3,8 +3,8 @@
 <n> := 0..100;
 
 # https://atom.io/packages/jumpy
-grab leap = TimeContext.Start("select", 30, "noop()") {shift+right} {shift+enter};
-leap = If(TimeContext.Restart("select"), {shift+right}) {shift+enter};
+grab delve = TimeContext.Start("select", 30, "noop()") {shift+right} {shift+enter};
+delve = If(TimeContext.Restart("select"), {shift+right}) {shift+enter};
 
 tack <n> = {alt+$1};
 tack tar = {ctrl+pgdn};
@@ -15,3 +15,11 @@ tack new = {ctrl+n};
 tack restore = {ctrl+shift+t};
 venture = {ctrl+p};
 treeview = {ctrl+shift+\};
+run it = {f5};
+last cursor = {alt+-};
+next cursor = {alt+shift+-};
+dowse = {ctrl+d};
+dowse <n> = {ctrl+d_$1};
+evict = {ctrl+k};
+diffuse = {ctrl+/};
+next error = {alt+shift+.};
