@@ -290,10 +290,10 @@ fry spill = rightEdge() {end}{ctrl+v} stopSelecting();
 fry spill <d> = rightEdge() {end}{ctrl+v_$1} stopSelecting();
 stow = {ctrl+s};
 forage = {ctrl+f} stopSelecting();
-delve <_anything> =
+notch <_anything> =
   If(AnythingNumber.Validate($1),
      {ctrl+g} AnythingNumber.Convert($1) {enter} {end});
-delvy <_anything> =
+notchy <_anything> =
   If(AnythingNumber.Validate($1),
      {ctrl+g} AnythingNumber.Convert($1) {enter} {end} {home});
 
