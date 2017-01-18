@@ -115,6 +115,9 @@ lappy =
 taree =
   If(neitherSelecting(),
      leftEdge() skipWords(1) selectWords(1));
+stacky =
+  If(neitherSelecting(),
+     rightEdge() {end} selectLine() {ctrl+c});
 wiki =
   If(neitherSelecting(),
      rightEdge() {end} selectLine());
@@ -132,6 +135,9 @@ lappy <n> =
 taree <n> =
   If(neitherSelecting(),
      leftEdge() skipWords($1) selectWords($1));
+stacky <n> =
+  If(neitherSelecting(),
+     rightEdge() {end} selectLines($1) {ctrl+c});
 wiki <n> =
   If(neitherSelecting(),
      rightEdge() {end} selectLines($1));
@@ -151,6 +157,9 @@ tarzy =
   If(notCollecting(),
      If(selecting(), {shift+ctrl+right},
         rightEdge() wordEnd() skipWords(1) selectWords(1)));
+stacksy =
+  If(neitherSelecting(),
+     {left}{right}{up} {end} selectLine() {ctrl+c});
 wicksy =
   If(notCollecting(),
      If(selecting(), {shift+end} selectLine(),
@@ -172,6 +181,9 @@ tarzy <n> =
   If(notCollecting(),
      If(selecting(), {shift+ctrl+right_$1},
         rightEdge() wordEnd() skipWords($1) selectWords($1)));
+stacksy <n> =
+  If(neitherSelecting(),
+     {left}{right}{up} {end} selectLines($1) {ctrl+c});
 wicksy <n> =
   If(notCollecting(),
      If(selecting(), selectLines($1),
@@ -224,9 +236,9 @@ stringy = '""'{left};
 singly = "''"{left};
 
 # multiline wrappers
-fry inset = "()"{left}{enter}{up}{end};
-fry bracken = "[]"{left}{enter}{up}{end};
-fry curly = "{}"{left}{enter}{up}{end};
+fry inset = "()"{left}{enter};
+fry bracken = "[]"{left}{enter};
+fry curly = "{}"{left}{enter};
 
 # punctuation
 adjourn = ";";
@@ -290,12 +302,14 @@ fry spill = rightEdge() {end}{ctrl+v} stopSelecting();
 fry spill <d> = rightEdge() {end}{ctrl+v_$1} stopSelecting();
 stow = {ctrl+s};
 forage = {ctrl+f} stopSelecting();
-notch <_anything> =
+ridge <_anything> =
   If(AnythingNumber.Validate($1),
      {ctrl+g} AnythingNumber.Convert($1) {enter} {end});
-notchy <_anything> =
+ridgy <_anything> =
   If(AnythingNumber.Validate($1),
      {ctrl+g} AnythingNumber.Convert($1) {enter} {end} {home});
+ridge = {end};
+ridgy = {home};
 
 # for Ditto Clipboard Manager, http://ditto-cp.sourceforge.net/
 spilly = SendSystemKeys({ctrl+`}) stopSelecting();
