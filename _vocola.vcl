@@ -196,10 +196,10 @@ bearsy <n> =
 # long-range arrows
 ridgy = If(selecting(), {shift+home}, {home});
 ridge = If(selecting(), {shift+end}, {end});
-scurry = If(selecting(), {shift+pgup}, {pgup});
-skirr = If(selecting(), {shift+pgdn}, {pgdn});
-scurry <n> = If(selecting(), {shift+pgup_$1}, {pgup_$1});
-skirr <n> = If(selecting(), {shift+pgdn_$1}, {pgdn_$1});
+ripple = If(selecting(), {shift+pgup}, {pgup});
+pull = If(selecting(), {shift+pgdn}, {pgdn});
+ripple <n> = If(selecting(), {shift+pgup_$1}, {pgup_$1});
+pull <n> = If(selecting(), {shift+pgdn_$1}, {pgdn_$1});
 
 # repeatable keys
 <repeatable> :=
@@ -280,10 +280,10 @@ fry sever = ",";
 #     clicks_sign, horizontal = Wheel_name[base]
 #     base_event = mouse_wheel_event(horizontal, hold_count * clicks_sign)
 #     return modifiers_down + [base_event] + modifiers_up
-pull = Keys.SendInput({wheeldown_1});
-pull <d> = Keys.SendInput({wheeldown_$1});
-ripple = Keys.SendInput({wheelup_1});
-ripple <d> = Keys.SendInput({wheelup_$1});
+crawl = Keys.SendInput({wheeldown_1});
+crawl <d> = Keys.SendInput({wheeldown_$1});
+crawly = Keys.SendInput({wheelup_1});
+crawly <d> = Keys.SendInput({wheelup_$1});
 
 # common shortcuts
 verse = {ctrl+z} stopSelecting();
