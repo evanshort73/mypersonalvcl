@@ -3,8 +3,8 @@
 <n> := 0..100;
 
 # https://atom.io/packages/jumpy
-grab ridge = TimeContext.Start("select", 30, "noop()") {shift+right} {shift+enter};
-ridge = If(TimeContext.Restart("select"), {shift+right}) {shift+enter};
+grab dusty = TimeContext.Start("select", 30, "noop()") {shift+right} {shift+enter};
+dusty = If(TimeContext.Restart("select"), {shift+right}) {shift+enter};
 
 tack <n> = {alt+$1};
 tack tar = {ctrl+pgdn};

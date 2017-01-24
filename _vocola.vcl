@@ -194,12 +194,12 @@ bearsy <n> =
         rightEdge() {down_$1} {end} selectLines($1)));
 
 # long-range arrows
-fry lap = If(selecting(), {shift+home}, {home});
-fry tar = If(selecting(), {shift+end}, {end});
-fry wick = If(selecting(), {shift+pgup}, {pgup});
-fry bear = If(selecting(), {shift+pgdn}, {pgdn});
-fry wick <n> = If(selecting(), {shift+pgup_$1}, {pgup_$1});
-fry bear <n> = If(selecting(), {shift+pgdn_$1}, {pgdn_$1});
+ridgy = If(selecting(), {shift+home}, {home});
+ridge = If(selecting(), {shift+end}, {end});
+scurry = If(selecting(), {shift+pgup}, {pgup});
+skirr = If(selecting(), {shift+pgdn}, {pgdn});
+scurry <n> = If(selecting(), {shift+pgup_$1}, {pgup_$1});
+skirr <n> = If(selecting(), {shift+pgdn_$1}, {pgdn_$1});
 
 # repeatable keys
 <repeatable> :=
@@ -213,11 +213,7 @@ fry bear <n> = If(selecting(), {shift+pgdn_$1}, {pgdn_$1});
 <repeatable> <n> = {$1_$2} stopSelecting();
 sky = {space} stopSelecting() stopCaps();
 sky <n> = {space_$1} stopSelecting() stopCaps();
-chop =
-  If(TimeContext.Restart("system", 0),
-     SendSystemKeys({enter}),
-     {enter})
-  stopSelecting() stopCollecting();
+chop = {enter} stopSelecting() stopCollecting();
 chop <n> = {enter_$1} stopSelecting() stopCollecting();
 fry chop = rightEdge() {end}{enter} stopSelecting();
 fry chop <n> = rightEdge() {end}{enter_$1} stopSelecting();
@@ -308,8 +304,6 @@ ridge <_anything> =
 ridgy <_anything> =
   If(AnythingNumber.Validate($1),
      {ctrl+g} AnythingNumber.Convert($1) {enter} {end} {home});
-ridge = {end};
-ridgy = {home};
 
 # for Ditto Clipboard Manager, http://ditto-cp.sourceforge.net/
 spilly = SendSystemKeys({ctrl+`}) stopSelecting();
@@ -317,8 +311,9 @@ spilly <d> = SendSystemKeys({ctrl+`}$1) stopSelecting();
 fry spilly = rightEdge() {end} SendSystemKeys({ctrl+`}) stopSelecting();
 fry spilly <d> = rightEdge() {end} SendSystemKeys({ctrl+`}$1) stopSelecting();
 
-flip = SendSystemKeys({ctrl+alt+tab}) TimeContext.Start("system", 1, "noop()");
-flip <d> = SendSystemKeys({ctrl+alt+tab_$1}) TimeContext.Start("system", 1, "noop()");
+# http://www.ntwind.com/software/vistaswitcher.html
+flip = AppBringUp("/Program Files/VistaSwitcher/vswitch64.exe") 1;
+flip <d> = AppBringUp("/Program Files/VistaSwitcher/vswitch64.exe") $1 {enter};
 window left = SendSystemKeys({win+left});
 window right = SendSystemKeys({win+right});
 
