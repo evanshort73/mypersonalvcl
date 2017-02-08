@@ -312,8 +312,11 @@ fry spilly = rightEdge() {end} SendSystemKeys({ctrl+`}) stopSelecting();
 fry spilly <d> = rightEdge() {end} SendSystemKeys({ctrl+`}$1) stopSelecting();
 
 # http://www.ntwind.com/software/vistaswitcher.html
-flip = AppBringUp("/Program Files/VistaSwitcher/vswitch64.exe") 1;
-flip <d> = AppBringUp("/Program Files/VistaSwitcher/vswitch64.exe") $1 {enter};
+flip = Keys.SendInput({win+f12}) WaitForWindow("VistaSwitcher", "VistaSwitcher_SwitcherWnd");
+<d3> := 3..9;
+flip 1 = ;
+flip 2 = Keys.SendInput({alt+tab});
+flip <d3> = Keys.SendInput({win+f12}) WaitForWindow("VistaSwitcher", "VistaSwitcher_SwitcherWnd") $1 {enter};
 window left = SendSystemKeys({win+left});
 window right = SendSystemKeys({win+right});
 
@@ -323,6 +326,7 @@ mute = Keys.SendInput({VolumeMute});
 time context ping = TimeContext.Ping();
 tug <_anything> = MenuPick($1) stopSelecting() stopCollecting();
 tug it = Keys.SendInput({Apps}) stopSelecting() stopCollecting();
+dust = AppBringUp("/Users/Evan/Documents/GitHub/mousejump/mousejump.exe") WaitForWindow("MouseJump", "mousejump");
 
 # variables
 camel <_anything> = EvalTemplate("%s[0].lower() + %s.title()[1:]", $1, $1);
