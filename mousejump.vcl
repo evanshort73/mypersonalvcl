@@ -22,6 +22,7 @@ tug it = Keys.SendInput({Apps});
 spin = {tab};
 sky = {space};
 dodge = {esc};
+swipe = {backspace};
 
 lap = {left};
 tar = {right};
