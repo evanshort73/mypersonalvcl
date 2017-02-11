@@ -36,18 +36,18 @@ fry <d> = $1;
   );
 <a> = If(TimeContext.Restart("capslock"), {shift+$1}, $1);
 fry <a> = {shift+$1};
-scream = TimeContext.Start("capslock", 40, "noop()");
+scream = TimeContext.Start("capslock", 40);
 
 selecting() := TimeContext.Restart("select");
 collecting() := TimeContext.Restart("controlselect");
-stopSelecting() := If(TimeContext.Restart("select", 0), "", "");
-stopCollecting() := If(TimeContext.Restart("controlselect", 0), "", "");
-stopCaps() := If(TimeContext.Restart("capslock", 0), "", "");
+stopSelecting() := TimeContext.Start("select", 0);
+stopCollecting() := TimeContext.Start("controlselect", 0);
+stopCaps() := TimeContext.Start("capslock", 0);
 notCollecting() := EvalTemplate('%s == "False"', collecting());
 neitherSelecting() :=
   EvalTemplate('%s == "False" and %s == "False"', selecting(), collecting());
 
-grab = TimeContext.Start("select", 40, "noop()") stopCollecting();
+grab = TimeContext.Start("select", 40) stopCollecting();
 jetsam = stopSelecting() stopCollecting() stopCaps();
 
 # arrows
@@ -220,7 +220,7 @@ fry chop <n> = rightEdge() {end}{enter_$1} stopSelecting();
 
 dodge =
   {esc}
-  If(TimeContext.Restart("select", 0), {right}, "")
+  If(TimeContext.Restart("select", 0), {right})
   stopCollecting();
 
 # wrappers
@@ -320,10 +320,9 @@ flip <d3> = Keys.SendInput({win+f12}) WaitForWindow("VistaSwitcher", "VistaSwitc
 window left = SendSystemKeys({win+left});
 window right = SendSystemKeys({win+right});
 
-volley = Keys.SendInput({VolumeUp}{VolumeDown}) TimeContext.Start("volume", 3, "noop()");
+volley = Keys.SendInput({VolumeUp}{VolumeDown}) TimeContext.Start("volume", 3);
 mute = Keys.SendInput({VolumeMute});
 
-time context ping = TimeContext.Ping();
 tug <_anything> = MenuPick($1) stopSelecting() stopCollecting();
 tug it = Keys.SendInput({Apps}) stopSelecting() stopCollecting();
 dust = AppBringUp("/Users/Evan/Documents/GitHub/mousejump/mousejump.exe") WaitForWindow("MouseJump", "mousejump");

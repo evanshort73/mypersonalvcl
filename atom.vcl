@@ -3,7 +3,7 @@
 <n> := 0..100;
 
 # https://atom.io/packages/jumpy
-grab dusty = TimeContext.Start("select", 30, "noop()") {shift+right} {shift+enter};
+grab dusty = TimeContext.Start("select", 30) {shift+right} {shift+enter};
 dusty = If(TimeContext.Restart("select"), {shift+right}) {shift+enter};
 
 tack <n> = {alt+$1};
