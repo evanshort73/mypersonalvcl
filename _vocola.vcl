@@ -367,3 +367,5 @@ puff <d> =
   stopCaps();
 coalesce = {end}{home}{shift+up}{shift+end}{space};
 coalesce <d> = Repeat($1, {end}{home}{shift+up}{shift+end}{space});
+
+wifi settings = AppBringUp("/Users/Evan/Documents/GitHub/mypersonalvcl/wifisettings.lnk");
